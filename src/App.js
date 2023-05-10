@@ -1,23 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import FormCreate from "./components/formCreate";
+import FormEdit from "./components/formEdit";
+import Listado from "./components/listado";
 
 function App() {
+
+  const [user, setUser] = useState()
+  const [users, setUsers] = useState([])
+  const [modoEdit, setModoEdit] = useState(false)
+  const [id, setId] = useState("")
+
+  const updateUser = (id, newUser) => {
+    setModoEdit(false);
+    setUsers(users.map(item => item.id === id ? newUser : item))
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <h1>Desarrollando CRUD</h1>
+      <div className="row">
+        <div className="col-5">
+          {modoEdit ?
+            <FormEdit users={users} setUsers={setUsers} id={id} user={user} updateUser={updateUser} />
+            :
+            <FormCreate users={users} setUsers={setUsers} id={id} user={user} />
+          }
+        </div>
+        <div className="col-7">
+          <Listado users={users} setUsers={setUsers} setModoEdit={setModoEdit} setUser={setUser} setId={setId} />
+        </div>
+      </div>
+
     </div>
   );
 }
